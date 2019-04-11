@@ -1,7 +1,7 @@
-##Service Bus Common
+## Service Bus Common
 Este plugin agrega as dependências básicas para implementação de um "service bus" baseado em Apache ActiveMQ e Apache Camel.
 
-###Configuração
+### Configuração
 Se estiver de posse do código fonte, deve-se adicionar a seguinte cláusula ao *build.gradle*:
 
 ```java
@@ -14,7 +14,7 @@ grails{
 
 ```
 
-###Requisitos operacionais
+### Requisitos operacionais
 A utilização deste plugin requer que esteja rodando em _localhost_ uma instância do Apache ActiveMQ ( 5.15.9 ou superior ) com sua configuração padrão.
 Deve-se utilizar as seguintes variáveis (_application.yml_ ou runtime) para configuração da conexão :
 
@@ -30,7 +30,7 @@ spring:
 
 ```
 
-###Quick start
+### Quick start
 
 O padrão adotado baseia-se na criação de rotas [Route] do Apache Camel. Sua aplicação pode configurar várias rotas pela 
 criação se _services_ que estendam a classe _ServicebusRouteProcessor_. Após a criação do _service_ , será necessário 
