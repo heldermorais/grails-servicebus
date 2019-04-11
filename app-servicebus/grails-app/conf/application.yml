@@ -2,6 +2,14 @@
 server:
     contextPath: '/app-servicebus'
 
+---
+spring:
+    activemq:
+        broker-url: tcp://localhost:61616
+        user: karaf
+        password: karaf
+---
+
 grails:
     profile: web
     codegen:

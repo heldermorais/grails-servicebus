@@ -9,7 +9,9 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.jms.annotation.EnableJms
 import org.springframework.jms.config.DefaultJmsListenerContainerFactory
 import org.springframework.jms.config.JmsListenerContainerFactory
+import org.springframework.jms.connection.JmsTransactionManager
 import org.springframework.jms.core.JmsTemplate
+import org.springframework.transaction.PlatformTransactionManager
 
 import javax.jms.ConnectionFactory
 
@@ -40,6 +42,8 @@ class ServicebusConfiguration {
     private String password
 
 
+
+
     @Bean
     ActiveMQConnectionFactory connectionFactory() {
         if ("".equals(user)) {
@@ -47,19 +51,6 @@ class ServicebusConfiguration {
         }
         return new ActiveMQConnectionFactory(user, password, brokerUrl)
     }
-
-
-    @Bean
-    JmsListenerContainerFactory jmsFactoryTopic(ConnectionFactory connectionFactory,
-                                                DefaultJmsListenerContainerFactoryConfigurer configurer) {
-
-        DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory()
-        configurer.configure(factory, connectionFactory)
-        factory.setPubSubDomain(true)
-        return factory
-
-    }
-
 
     @Bean
     JmsTemplate jmsTemplate() {
@@ -69,11 +60,57 @@ class ServicebusConfiguration {
     }
 
 
+
+
+    @Bean
+    JmsListenerContainerFactory jmsFactoryTopic(ConnectionFactory connectionFactory,
+                                                DefaultJmsListenerContainerFactoryConfigurer configurer) {
+
+        DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory()
+        configurer.configure(factory, connectionFactory)
+        factory.setPubSubDomain(true)
+        factory.setTransactionManager(transactionManager());
+
+        return factory
+
+    }
+
+
+
+
+
     @Bean
     JmsTemplate jmsTemplateTopic() {
         JmsTemplate jmsTemplate = new JmsTemplate(connectionFactory())
         jmsTemplate.setPubSubDomain(true)
         return jmsTemplate
     }
+
+
+
+
+
+    @Bean
+    public JmsListenerContainerFactory<?> jmsListenerContainerFactory (
+            ConnectionFactory connectionFactory,
+            DefaultJmsListenerContainerFactoryConfigurer configurer) {
+
+        DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
+        configurer.configure(factory, connectionFactory);
+        factory.setTransactionManager(transactionManager());
+
+        return factory;
+
+    }
+
+
+    @Bean
+    public PlatformTransactionManager transactionManager() {
+        JmsTransactionManager transactionManager = new JmsTransactionManager();
+        transactionManager.setConnectionFactory(connectionFactory());
+        return transactionManager;
+    }
+
+
 
 }
