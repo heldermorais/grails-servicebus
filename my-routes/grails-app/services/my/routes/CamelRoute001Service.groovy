@@ -19,4 +19,5 @@ class CamelRoute001Service extends ServicebusRouteBuilder {
         .log(LoggingLevel.INFO,"Hi there !")
         log.info "Configuration end."
     }
+
 }
