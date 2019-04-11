@@ -1,0 +1,7 @@
+
+grails{
+    plugins{
+        compile project(":my-routes")
+        compile project(":boleto-bb")
+    }
+}

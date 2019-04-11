@@ -1,0 +1,10 @@
+dependencies {
+
+    // https://mvnrepository.com/artifact/com.lowagie/itext
+    compile group: 'com.lowagie', name: 'itext', version: '2.1.7'
+
+    compile "net.sf.jasperreports:jasperreports:5.5.0"
+    compile 'br.com.caelum.stella:caelum-stella-core:2.1.2'
+    compile 'br.com.caelum.stella:caelum-stella-boleto:2.1.2'
+
+}

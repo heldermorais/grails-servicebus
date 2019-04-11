@@ -1,3 +1,4 @@
 include 'app-servicebus',
         'my-routes',
+        'boleto-bb',
         'servicebus-common'

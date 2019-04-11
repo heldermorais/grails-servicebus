@@ -7,12 +7,10 @@ dependencies{
     //compile "org.apache.camel:camel-swagger-java-starter:2.22.4"
 
     compile "org.springframework.boot:spring-boot-starter-activemq"
-
     compile "org.apache.camel:camel-jms:$camelVersion"
     compile "org.apache.activemq:activemq-camel:$activemqCamelVersion"
 
     compile "io.hawt:hawtio-springboot-1:$hawtioVersion"
-    
     compile group: 'io.hawt', name: 'hawtio-log', version: "$hawtioVersion"
 
 }
