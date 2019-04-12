@@ -42,8 +42,10 @@ class ServicebusConfiguration {
     private String password
 
 
-
-
+    /**
+     * Provê a factory para conexão com servidor ActiveMQ. Aqui é configurado "brokerUrl", "userName" e "password".
+     * @return
+     */
     @Bean
     ActiveMQConnectionFactory connectionFactory() {
         if ("".equals(user)) {
@@ -52,16 +54,16 @@ class ServicebusConfiguration {
         return new ActiveMQConnectionFactory(user, password, brokerUrl)
     }
 
-    @Bean
-    JmsTemplate jmsTemplate() {
-
-        return new JmsTemplate(connectionFactory())
-
-    }
 
 
 
 
+    /**
+     * Provê "JmsListenerContainer" que emcapsula os consumers de TOPICs JMS .
+     * @param connectionFactory Injetado pelo container Spring.
+     * @param configurer Injetado pelo container Spring.
+     * @return
+     */
     @Bean
     JmsListenerContainerFactory jmsFactoryTopic(ConnectionFactory connectionFactory,
                                                 DefaultJmsListenerContainerFactoryConfigurer configurer) {
@@ -78,18 +80,12 @@ class ServicebusConfiguration {
 
 
 
-
-    @Bean
-    JmsTemplate jmsTemplateTopic() {
-        JmsTemplate jmsTemplate = new JmsTemplate(connectionFactory())
-        jmsTemplate.setPubSubDomain(true)
-        return jmsTemplate
-    }
-
-
-
-
-
+    /**
+     *  Provê "JmsListenerContainer" que emcapsula os consumers de QUEUESs JMS .
+     * @param connectionFactory
+     * @param configurer
+     * @return
+     */
     @Bean
     public JmsListenerContainerFactory<?> jmsListenerContainerFactory (
             ConnectionFactory connectionFactory,
@@ -104,6 +100,11 @@ class ServicebusConfiguration {
     }
 
 
+    /**
+     * Provê "transactionManager" para permitir que o envio e recebimento de mensagens seja feita dentro de uma transação.
+     * É utilizado por {@see #jmsFactoryTopic} e {@see #jmsListenerContainerFactory}
+     * @return
+     */
     @Bean
     public PlatformTransactionManager transactionManager() {
         JmsTransactionManager transactionManager = new JmsTransactionManager();
@@ -111,6 +112,31 @@ class ServicebusConfiguration {
         return transactionManager;
     }
 
+
+
+
+    /**
+     * Provê template para envio de mensagem para QUEUEs no ActiveMQ.
+     * @return
+     */
+    @Bean
+    JmsTemplate jmsTemplate() {
+
+        return new JmsTemplate(connectionFactory())
+
+    }
+
+
+    /**
+     * Provê template para envio de mensagem para TOPICs no ActiveMQ.
+     * @return
+     */
+    @Bean
+    JmsTemplate jmsTemplateTopic() {
+        JmsTemplate jmsTemplate = new JmsTemplate(connectionFactory())
+        jmsTemplate.setPubSubDomain(true)
+        return jmsTemplate
+    }
 
 
 }

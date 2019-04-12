@@ -22,7 +22,12 @@ class CamelRoute001Service extends ServicebusRouteBuilder {
 
         from("activemq:queue:queue.redeliver" )
         .to("bean:transactedConsumer001Service")
+
+
+
+        ;
         log.info "Configuration end."
+
     }
 
 }

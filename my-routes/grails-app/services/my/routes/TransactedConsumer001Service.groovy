@@ -15,14 +15,20 @@ class TransactedConsumer001Service {
 
         log.info "Processando Msg ${body} "
 
+        try {
 
-        def jsonSlurper = new JsonSlurper()
-        def object = jsonSlurper.parseText(body)
+            def jsonSlurper = new JsonSlurper()
+            def object = jsonSlurper.parseText(body)
 
-        log.info( "Object.count = ${object.count}");
+            log.info("Object.count = ${object.count}");
 
+            if(object.count < 0){
+                throw new JMSException("Contador não pode ser maior que Zero")
+            }
 
-        throw new JMSException("Erro Horrivel.")
+        } catch (Exception e) {
+            throw new JMSException("Erro Horrivel.", e)
+        }
 
         log.info "End"
     }
